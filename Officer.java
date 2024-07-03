@@ -92,7 +92,7 @@ public class Officer {
 			System.out.println("Undone");
 			redoStack.push(action);
 			System.out.println("tell boss");
-			tellYourBoss();
+
 		}
 	}
 
@@ -102,7 +102,7 @@ public class Officer {
 			Action action = redoStack.pop();
 			action.execute();
 			undoStack.push(action);
-			tellYourBoss();
+
 		}
 	}
 
