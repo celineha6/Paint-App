@@ -1,74 +1,37 @@
 package javiergs.gui.paint.gamma;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Stack;
 
+/**
+ * StatusPanel creates a panel with two buttons: Undo and Redo.
+ * This version includes an ActionListener.
+ *
+ * Author: javiergs
+ * Version: 2.0
+ */
 public class StatusPanel extends JPanel {
 
-    private Stack<Action> undoStack = new Stack<>();
-    private Stack<Action> redoStack = new Stack<>();
+    private JButton undoButton;
+    private JButton redoButton;
 
     public StatusPanel() {
-        JButton buttonUndo = new JButton("Undo");
-        JButton buttonErase = new JButton("Erase");
-        add(buttonUndo);
-        add(buttonErase);
+        undoButton = new JButton("Undo");
+        redoButton = new JButton("Redo");
+        add(undoButton);
+        add(redoButton);
 
         ActionNanny actionNanny = new ActionNanny();
-        buttonUndo.addActionListener(actionNanny);
-        buttonErase.addActionListener(actionNanny);
+        undoButton.addActionListener(actionNanny);
+        redoButton.addActionListener(actionNanny);
     }
 
-    private void performAction(Action action) {
-        action.execute();
-        undoStack.push(action);
-        redoStack.clear();
+    // Method to return the undo button
+    public JButton getUndoButton() {
+        return undoButton;
     }
 
-    private void undoAction() {
-        if (!undoStack.isEmpty()) {
-            Action action = undoStack.pop();
-            action.undo();
-            redoStack.push(action);
-        }
-    }
-
-    private void redoAction() {
-        if (!redoStack.isEmpty()) {
-            Action action = redoStack.pop();
-            action.execute();
-            undoStack.push(action);
-        }
-    }
-
-    private interface Action {
-        void execute();
-        void undo();
-    }
-
-    private class EraseAction implements Action {
-        @Override
-        public void execute() {
-            System.out.println("Erase executed");
-        }
-
-        @Override
-        public void undo() {
-            System.out.println("Erase undone");
-        }
-    }
-
-    private class ActionNanny implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();
-            if (command.equals("Undo")) {
-                undoAction();
-            } else if (command.equals("Erase")) {
-                performAction(new EraseAction());
-            }
-        }
+    // Method to return the redo button
+    public JButton getRedoButton() {
+        return redoButton;
     }
 }
