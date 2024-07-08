@@ -2,7 +2,9 @@ package javiergs.gui.paint.gamma;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Iterator;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Officer is a class that manages the drawing application's state and actions.
@@ -116,7 +118,7 @@ public class Officer {
 			DrawAction action = redoStack.pop();
 			action.execute();
 			undoStack.push(action);
-
+			tellYourBoss();
 		}
 	}
 
@@ -127,15 +129,20 @@ public class Officer {
 		}
 	}
 
-	private interface Action {
-		void execute();
-		void undo();
+	public static void shapeSelect() {
+		for (DrawAction shape : Officer.undoStack) {
+			if (shape.isSelected()) {
+				System.out.println("Shape Selected!");
+				shape.deselect();
+			}
+		}
 	}
 
 	public static class DrawAction {
 		private String shape;
 		private int x, y, width, height;
 		private Color color;
+		private boolean selected;
 
 		public DrawAction(String shape, int x, int y, int width, int height, Color color) {
 			this.shape = shape;
@@ -144,6 +151,11 @@ public class Officer {
 			this.width = width;
 			this.height = height;
 			this.color = color;
+			this.selected = false;
+		}
+
+		public boolean isSelected() {
+			return selected;
 		}
 
 		public void execute() {
@@ -168,6 +180,23 @@ public class Officer {
 			} else if (shape.equals("Arc")) {
 				g.fillArc(x, y, width, height, 0, 180);
 			}
+		}
+
+		public boolean checkCoordinates(int xClick, int yClick) {
+			int lowBoundX = x;
+			int highBoundX = x + width;
+			int lowBoundY = y;
+			int highBoundY = y + width;
+
+			return xClick >= lowBoundX && xClick <= highBoundX && yClick >= lowBoundY && yClick <= highBoundY;
+		}
+
+		public void selectShape() {
+			selected = true;
+		}
+
+		public void deselect() {
+			selected = false;
 		}
 	}
 }

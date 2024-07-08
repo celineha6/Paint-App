@@ -3,6 +3,8 @@ package javiergs.gui.paint.gamma;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * MouseNanny listens for mouse events to facilitate drawing operations.
@@ -13,10 +15,16 @@ import java.awt.event.MouseMotionListener;
  * @version 1.0
  */
 public class MouseNanny implements MouseListener, MouseMotionListener {
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// Not used in this implementation
+		int x = e.getX();
+		int y = e.getY();
+		for (Officer.DrawAction shape : Officer.undoStack) {
+			if (shape.checkCoordinates(x, y)) {
+				shape.selectShape();
+				Officer.shapeSelect();
+			}
+		}
 	}
 
 	@Override
