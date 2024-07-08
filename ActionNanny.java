@@ -10,32 +10,32 @@ import java.awt.event.ActionListener;
  * Send information to Officer.
  *
  * @author javiergs
+ * @author Tenzin Konchok
  * @version 2.0
  */
 public class ActionNanny implements ActionListener {
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() instanceof JComboBox) {
-			JComboBox comboBox = (JComboBox) e.getSource();
-			if (comboBox.getSelectedItem().equals("Black")) {
+		if (e.getSource() instanceof JMenuItem) {
+			String command = e.getActionCommand();
+			if (command.equals("Black")) {
 				Officer.setColor(Color.BLACK);
-			} else if (comboBox.getSelectedItem().equals("Red")) {
+			} else if (command.equals("Red")) {
 				Officer.setColor(Color.RED);
-			} else if (comboBox.getSelectedItem().equals("Blue")) {
+			} else if (command.equals("Blue")) {
 				Officer.setColor(Color.BLUE);
-			} else if (comboBox.getSelectedItem().equals("Green")) {
+			} else if (command.equals("Green")) {
 				Officer.setColor(Color.GREEN);
-			} else if (comboBox.getSelectedItem().equals("Yellow")) {
+			} else if (command.equals("Yellow")) {
 				Officer.setColor(Color.YELLOW);
-			} else if (comboBox.getSelectedItem().equals("Orange")) {
+			} else if (command.equals("Orange")) {
 				Officer.setColor(Color.ORANGE);
-			} else if (comboBox.getSelectedItem().equals("Pink")) {
+			} else if (command.equals("Pink")) {
 				Officer.setColor(Color.PINK);
+			} else {
+				Officer.setShape(e.getActionCommand());
 			}
-		} else if (e.getSource() instanceof JRadioButton) {
-			Officer.setShape(e.getActionCommand());
 		}
 	}
-	
 }
