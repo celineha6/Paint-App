@@ -1,4 +1,4 @@
-package javiergs.gui.paint.gamma;
+
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package javiergs.gui.paint.gamma;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author: javiergs, Pranay Tiru, Akshaj Srirambhatla
  * Version: 3.0
  */
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel{
 
 	public DrawPanel() {
 		setBackground(new Color(176, 250, 192));
@@ -20,9 +20,9 @@ public class DrawPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		ArrayList<Officer.DrawAction> list = new ArrayList(Officer.undoStack);
+		ArrayList<DrawAction> list = new ArrayList(Officer.undoStack);
 
-		for (Officer.DrawAction action : list) {
+		for (DrawAction action : list) {
 			action.draw(g);
 		}
 

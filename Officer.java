@@ -1,4 +1,3 @@
-package javiergs.gui.paint.gamma;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,12 +26,9 @@ public class Officer {
 	public static boolean isDrawingOutline = false;
 	public static int outlineX, outlineY, outlineWidth, outlineHeight;
 
-	public static Color getColor() {
-		return color;
-	}
-
 	public static void setColor(Color color) {
 		Officer.color = color;
+
 	}
 
 	public static String getShape() {
@@ -59,16 +55,8 @@ public class Officer {
 		Officer.y = y;
 	}
 
-	public static int getWidth() {
-		return width;
-	}
-
 	public static void setWidth(int width) {
 		Officer.width = width;
-	}
-
-	public static int getHeight() {
-		return height;
 	}
 
 	public static void setHeight(int height) {
@@ -95,7 +83,6 @@ public class Officer {
 
 	public static void performDrawAction() {
 		DrawAction action = new DrawAction(shape, x, y, width, height, color);
-		action.execute();
 		undoStack.push(action);
 		redoStack.clear();
 		clearOutline();
@@ -116,11 +103,37 @@ public class Officer {
 		System.out.println("Redo button clicked!");
 		if (!redoStack.isEmpty()) {
 			DrawAction action = redoStack.pop();
-			action.execute();
 			undoStack.push(action);
 			tellYourBoss();
 		}
 	}
+	public static void eraseDrawAction() {
+		System.out.println("Erase button clicked!");
+		if (!redoStack.isEmpty()) {
+			DrawAction action = redoStack.pop();
+			undoStack.push(action);
+			tellYourBoss();
+		}
+	}
+
+	public static void copyDrawAction() {
+		System.out.println("Copy button clicked!");
+		if (!redoStack.isEmpty()) {
+			DrawAction action = redoStack.pop();
+			undoStack.push(action);
+			tellYourBoss();
+		}
+	}
+
+	public static void pasteDrawAction() {
+		System.out.println("Paste button clicked!");
+		if (!redoStack.isEmpty()) {
+			DrawAction action = redoStack.pop();
+			undoStack.push(action);
+			tellYourBoss();
+		}
+	}
+
 
 	public static void tellYourBoss() {
 		if (drawPanel != null) {
@@ -135,68 +148,6 @@ public class Officer {
 				System.out.println("Shape Selected!");
 				shape.deselect();
 			}
-		}
-	}
-
-	public static class DrawAction {
-		private String shape;
-		private int x, y, width, height;
-		private Color color;
-		private boolean selected;
-
-		public DrawAction(String shape, int x, int y, int width, int height, Color color) {
-			this.shape = shape;
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
-			this.color = color;
-			this.selected = false;
-		}
-
-		public boolean isSelected() {
-			return selected;
-		}
-
-		public void execute() {
-			// Perform the drawing action based on shape, coordinates, and color
-			Graphics g = drawPanel.getGraphics();
-			g.setColor(color);
-			if (shape.equals("Rectangle")) {
-				g.fillRect(x, y, width, height);
-			} else if (shape.equals("Circle")) {
-				g.fillOval(x, y, width, height);
-			} else if (shape.equals("Arc")) {
-				g.fillArc(x, y, width, height, 0, 180);
-			}
-		}
-
-		public void draw(Graphics g) {
-			g.setColor(color);
-			if (shape.equals("Rectangle")) {
-				g.fillRect(x, y, width, height);
-			} else if (shape.equals("Circle")) {
-				g.fillOval(x, y, width, height);
-			} else if (shape.equals("Arc")) {
-				g.fillArc(x, y, width, height, 0, 180);
-			}
-		}
-
-		public boolean checkCoordinates(int xClick, int yClick) {
-			int lowBoundX = x;
-			int highBoundX = x + width;
-			int lowBoundY = y;
-			int highBoundY = y + width;
-
-			return xClick >= lowBoundX && xClick <= highBoundX && yClick >= lowBoundY && yClick <= highBoundY;
-		}
-
-		public void selectShape() {
-			selected = true;
-		}
-
-		public void deselect() {
-			selected = false;
 		}
 	}
 }
