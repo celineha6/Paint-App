@@ -1,9 +1,8 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
+
 
 /**
  * Officer is a class that manages the drawing application's state and actions.
@@ -13,55 +12,14 @@ import java.util.concurrent.TimeUnit;
  * Version: 3.0
  */
 public class Officer {
-
-	private static Color color = Color.BLACK; // Default color
-	private static String shape = "Rectangle"; // Default shape
-	private static int x;
-	private static int y;
-	private static int width;
-	private static int height;
+	public static DrawAction drawAction = new DrawAction("Rectangle", 0, 0, 0, 0, Color.BLACK);
 	public static JPanel drawPanel;
 	public static Stack<DrawAction> undoStack = new Stack<>();
 	private static Stack<DrawAction> redoStack = new Stack<>();
 	public static boolean isDrawingOutline = false;
 	public static int outlineX, outlineY, outlineWidth, outlineHeight;
-
-	public static void setColor(Color color) {
-		Officer.color = color;
-
-	}
-
-	public static String getShape() {
-		return shape;
-	}
-
-	public static void setShape(String shape) {
-		Officer.shape = shape;
-	}
-
-	public static int getX() {
-		return x;
-	}
-
-	public static void setX(int x) {
-		Officer.x = x;
-	}
-
-	public static int getY() {
-		return y;
-	}
-
-	public static void setY(int y) {
-		Officer.y = y;
-	}
-
-	public static void setWidth(int width) {
-		Officer.width = width;
-	}
-
-	public static void setHeight(int height) {
-		Officer.height = height;
-	}
+	public static DrawAction selectedShape;
+	private static DrawAction copyShape;
 
 	public static void setDrawPanel(JPanel panel) {
 		drawPanel = panel;
@@ -82,7 +40,8 @@ public class Officer {
 	}
 
 	public static void performDrawAction() {
-		DrawAction action = new DrawAction(shape, x, y, width, height, color);
+		DrawAction action = new DrawAction(drawAction.getShape(), drawAction.getX(), drawAction.getY(),
+				drawAction.getWidth(), drawAction.getHeight(), drawAction.getColor());
 		undoStack.push(action);
 		redoStack.clear();
 		clearOutline();
@@ -109,28 +68,29 @@ public class Officer {
 	}
 	public static void eraseDrawAction() {
 		System.out.println("Erase button clicked!");
-		if (!redoStack.isEmpty()) {
-			DrawAction action = redoStack.pop();
-			undoStack.push(action);
-			tellYourBoss();
-		}
+		undoStack.clear();
+		redoStack.clear();
+		System.out.println("tell boss");
+		tellYourBoss();
 	}
 
 	public static void copyDrawAction() {
-		System.out.println("Copy button clicked!");
-		if (!redoStack.isEmpty()) {
-			DrawAction action = redoStack.pop();
-			undoStack.push(action);
-			tellYourBoss();
+		if(selectedShape != null) {
+			copyShape = selectedShape;
+		} else {
+			System.out.println("Select a shape!");
 		}
 	}
 
 	public static void pasteDrawAction() {
-		System.out.println("Paste button clicked!");
-		if (!redoStack.isEmpty()) {
-			DrawAction action = redoStack.pop();
-			undoStack.push(action);
+		if(copyShape != null) {
+			DrawAction pasteShape = new DrawAction(copyShape.getShape(), copyShape.getX() + 10,
+					copyShape.getY() - 10, copyShape.getWidth(), copyShape.getHeight(), copyShape.getColor());
+			pasteShape.setSelected(false);
+			undoStack.push(pasteShape);
 			tellYourBoss();
+		} else {
+			System.out.println("Paste failed!");
 		}
 	}
 
@@ -142,12 +102,20 @@ public class Officer {
 		}
 	}
 
-	public static void shapeSelect() {
-		for (DrawAction shape : Officer.undoStack) {
-			if (shape.isSelected()) {
-				System.out.println("Shape Selected!");
-				shape.deselect();
-			}
+	public static void deselectAll() {
+		for(DrawAction d: undoStack) {
+			d.setSelected(false);
+		}
+	}
+
+	public static void shapeSelect(DrawAction shape) {
+		selectedShape = shape;
+		if(shape != null) {
+			shape.setSelected(true);
+			tellYourBoss();
+		} else {
+			deselectAll();
+			tellYourBoss();
 		}
 	}
 }

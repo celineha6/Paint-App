@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,12 +21,15 @@ public class DrawPanel extends JPanel{
 		ArrayList<DrawAction> list = new ArrayList(Officer.undoStack);
 
 		for (DrawAction action : list) {
+			if(action.isSelected()) {
+				action.drawOutline(g);
+			}
 			action.draw(g);
 		}
 
 		if (Officer.isDrawingOutline) {
-			g.setColor(Color.BLACK); // Outline color
-			switch (Officer.getShape()) {
+			g.setColor(Color.BLACK);
+			switch (Officer.drawAction.getShape()) {
 				case "Rectangle":
 					g.drawRect(Officer.outlineX, Officer.outlineY, Officer.outlineWidth, Officer.outlineHeight);
 					break;

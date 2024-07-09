@@ -1,10 +1,6 @@
-
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * MouseNanny listens for mouse events to facilitate drawing operations.
@@ -15,33 +11,48 @@ import java.util.Iterator;
  * @version 1.0
  */
 public class MouseNanny implements MouseListener, MouseMotionListener {
+	private boolean drawingInProgress = false;
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		for (DrawAction shape : Officer.undoStack) {
-			if (shape.checkCoordinates(x, y)) {
-				shape.selectShape();
-				Officer.shapeSelect();
+		if(!drawingInProgress) {
+			Officer.deselectAll();
+			boolean selected = false;
+			int x = e.getX();
+			int y = e.getY();
+			for (int i = Officer.undoStack.size() - 1; i >= 0; i--) {
+				DrawAction shape = Officer.undoStack.get(i);
+				if (shape.checkCoordinates(x, y)) {
+					Officer.shapeSelect(shape);
+					selected = true;
+					break;
+				}
+			}
+			if(!selected) {
+				Officer.shapeSelect(null);
 			}
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		Officer.setX(x);
-		Officer.setY(y);
+		if(!drawingInProgress) {
+			int x = e.getX();
+			int y = e.getY();
+			Officer.drawAction.setX(x);
+			Officer.drawAction.setY(y);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		Officer.setWidth(x - Officer.getX());
-		Officer.setHeight(y - Officer.getY());
-		Officer.performDrawAction(); // Perform drawing action on mouse release
+		if(drawingInProgress) {
+			int x = e.getX();
+			int y = e.getY();
+			Officer.drawAction.setWidth(x - Officer.drawAction.getX());
+			Officer.drawAction.setHeight(y - Officer.drawAction.getY());
+			Officer.performDrawAction();
+			drawingInProgress = false;
+		}
 	}
 
 	@Override
@@ -58,9 +69,10 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 	public void mouseDragged(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		int width = x - Officer.getX();
-		int height = y - Officer.getY();
-		Officer.drawOutline(Officer.getX(), Officer.getY(), width, height);
+		int width = x - Officer.drawAction.getX();
+		int height = y - Officer.drawAction.getY();
+		drawingInProgress = true;
+		Officer.drawOutline(Officer.drawAction.getX(), Officer.drawAction.getY(), width, height);
 	}
 
 	@Override
