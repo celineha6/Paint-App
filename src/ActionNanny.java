@@ -8,10 +8,11 @@ import java.awt.event.ActionListener;
 /**
  * ActionNanny listens for action events.
  * Send information to Officer.
+ * @author: javiergs
  *
- * @author javiergs
- * @author Tenzin Konchok
- * @version 2.0
+ * @author: Tenzin Konchok
+ * @author: Pranay Tiru
+ * @version 3.0
  */
 public class ActionNanny implements ActionListener {
 

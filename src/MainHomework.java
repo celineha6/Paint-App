@@ -2,16 +2,23 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
  * MainHomework creates a frame and adds three panels to it.
  * This version adds MouseListener to the DrawPanel.
- * @authors: Celine Ha, Tenzin Konchok, Pranay Tiru, Akshaj Srirambhatla
  * @author javiergs
- * @version 2.0
+
+ * @author: Celine Ha
+ * @author: Tenzin Konchok
+ * @author: Pranay Tiru
+ * @author: Akshaj Srirambhatla
+ * @version 3.0
  */
 public class MainHomework extends JFrame {
+
 
 	public static void main(String[] args) {
 		MainHomework app = new MainHomework();
@@ -50,13 +57,20 @@ public class MainHomework extends JFrame {
 
 		JMenu colorMenu = getColorjMenu(actionNanny);
 
-		JMenu About = new JMenu("About");
+		JMenuItem AboutItem = new JMenuItem("About");
+
+		AboutItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showAboutDialog();
+			}
+		});
 
 		menuBar.add(FileMenu);
 		menuBar.add(shapeMenu);
 		menuBar.add(colorMenu);
 		menuBar.add(editMenu);
-		menuBar.add(About);
+		menuBar.add(AboutItem);
 
 		return menuBar;
 	}
@@ -70,12 +84,24 @@ public class MainHomework extends JFrame {
 		FileMenu.add(SaveItem);
 		FileMenu.add(LoadItem);
 
+		NewItem.addActionListener(e -> {
+			Officer.clearDrawings();
+		});
+
+		SaveItem.addActionListener(e -> {
+			Officer.saveDrawings();
+		});
+
+		LoadItem.addActionListener(e -> {
+            Officer.loadDrawings();
+		});
+
 		return FileMenu;
 	}
 
 	private static JMenu getShapejMenu(ActionNanny a) {
 		JMenu shapeMenu = new JMenu("Shape");
-		String[] shapes = {"Rectangle", "Circle", "Arc"};
+		String[] shapes = {"Line", "Rectangle", "Circle", "Arc"};
 
 
 		for (String shape : shapes) {
@@ -142,6 +168,52 @@ public class MainHomework extends JFrame {
 		editMenu.add(eraseItem);
 
 		return editMenu;
+	}
+
+	private void showAboutDialog() {
+		    JDialog aboutDialog = new JDialog();
+			aboutDialog = new JDialog(this, "About", true);
+			aboutDialog.setLayout(new BorderLayout());
+			aboutDialog.setResizable(false);
+
+			ImageIcon logoIcon = new ImageIcon("logo.png");
+			Image scaledLogo = logoIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+			JLabel logoLabel = new JLabel(new ImageIcon(scaledLogo));
+			logoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+			aboutDialog.add(logoLabel, BorderLayout.WEST);
+
+			JPanel infoPanel = new JPanel(new BorderLayout());
+
+			Font playfulFont = new Font("Comic Sans MS", Font.BOLD, 14);
+
+			JLabel membersLabel = new JLabel("Team Members:");
+			membersLabel.setFont(playfulFont);
+
+			JPanel membersPanel = new JPanel(new BorderLayout());
+			membersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		    JPanel namesPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+			namesPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+			namesPanel.add(new JLabel("Celine Ha"));
+			namesPanel.add(new JLabel("Tenzin Konchok"));
+			namesPanel.add(new JLabel("Pranay Tiru"));
+			namesPanel.add(new JLabel("Akshaj Srirambhatla"));
+
+		    membersPanel.add(membersLabel, BorderLayout.NORTH);
+			membersPanel.add(namesPanel, BorderLayout.CENTER);
+
+			infoPanel.add(membersPanel, BorderLayout.NORTH);
+
+			JLabel versionLabel = new JLabel("Version: 3.0");
+			versionLabel.setFont(playfulFont);
+			versionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+			infoPanel.add(versionLabel, BorderLayout.SOUTH);
+
+			aboutDialog.add(infoPanel, BorderLayout.CENTER);
+			aboutDialog.setSize(400, 300);
+			aboutDialog.setLocationRelativeTo(this);
+			aboutDialog.setVisible(true);
 	}
 
 	public static void clearCheckBoxes(ArrayList<JCheckBoxMenuItem> arrayCB, JCheckBoxMenuItem cb){

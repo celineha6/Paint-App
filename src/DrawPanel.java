@@ -7,8 +7,9 @@ import java.util.ArrayList;
 /**
  * DrawPanel creates a panel where the drawing is done.
  * According to the data in Officer.
+ * @author: javiergs
  *
- * @author: javiergs, Pranay Tiru, Akshaj Srirambhatla
+ * @author: Akshaj Srirambhatla
  * Version: 3.0
  */
 public class DrawPanel extends JPanel{
@@ -41,6 +42,10 @@ public class DrawPanel extends JPanel{
 				case "Arc":
 					g.drawArc(Officer.outlineX, Officer.outlineY, Officer.outlineWidth, Officer.outlineHeight, 0, 180);
 					break;
+				case "Line":
+					g.drawLine(Officer.outlineX, Officer.outlineY, Officer.outlineX + Officer.outlineWidth, Officer.outlineY + Officer.outlineHeight);
+					break;
+
 			}
 		}
 	}

@@ -1,8 +1,21 @@
 package src;
-
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class DrawAction {
+/**
+ * Draw Action is class that has all the information for a shape, and implements Serializable to serialize the objects
+ * so that the byte stream can be reverted back into a copy of the object when saving the drawings and loading them
+ *
+ * @author: Celine Ha
+ * @author: Pranay Tiru
+ * @author: Tenzin Konchok
+ * @version 3.0
+ */
+
+public class DrawAction implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String shape;
     private int x, y, width, height;
     private Color color;
@@ -83,6 +96,10 @@ public class DrawAction {
         } else if (shape.equals("Arc")) {
             g.fillArc(x, y, width, height, 0, 180);
         }
+        else if (shape.equals("Line")) {
+            g.drawLine(x, y, x + width, y + height);
+        }
+
     }
 
     public void drawOutline(Graphics g) {
@@ -93,6 +110,8 @@ public class DrawAction {
             g.drawOval(x - 2, y - 2, width + 4, height + 4);
         } else if (shape.equals("Arc")) {
             g.drawArc(x - 2, y - 2, width + 4, height + 4, 0, 180);
+        } else if (shape.equals("Line")) {
+            g.drawLine(x - 2, y - 2, x + width + 4, y + height + 4);
         }
     }
 
@@ -105,4 +124,3 @@ public class DrawAction {
         return xClick >= lowBoundX && xClick <= highBoundX && yClick >= lowBoundY && yClick <= highBoundY;
     }
 }
-

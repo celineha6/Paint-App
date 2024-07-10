@@ -1,6 +1,5 @@
 package src;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -8,8 +7,10 @@ import java.awt.event.MouseMotionListener;
 /**
  * MouseNanny listens for mouse events to facilitate drawing operations.
  * Sends information to Officer for handling drawing actions.
+ * @author javiergs
  *
- * @version 1.0
+ * @author: Pranay Tiru
+ * @version 3.0
  */
 public class MouseNanny implements MouseListener, MouseMotionListener {
 	private boolean drawingInProgress = false;
@@ -71,12 +72,12 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// Not used in this implementation
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// Not used in this implementation
+
 	}
 
 	@Override
