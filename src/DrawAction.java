@@ -97,10 +97,10 @@ public class DrawAction {
     }
 
     public boolean checkCoordinates(int xClick, int yClick) {
-        int lowBoundX = x;
-        int highBoundX = x + width;
-        int lowBoundY = y;
-        int highBoundY = y + width;
+        int lowBoundX = Math.min(x, x + width);
+        int highBoundX = Math.max(x, x + width);
+        int lowBoundY = Math.min(y, y + height);
+        int highBoundY = Math.max(y, y + height);
 
         return xClick >= lowBoundX && xClick <= highBoundX && yClick >= lowBoundY && yClick <= highBoundY;
     }
