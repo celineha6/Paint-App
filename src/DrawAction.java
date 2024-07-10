@@ -1,6 +1,5 @@
 package src;
 import java.awt.*;
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,7 +13,6 @@ import java.io.Serializable;
  */
 
 public class DrawAction implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
     private String shape;
     private int x, y, width, height;
