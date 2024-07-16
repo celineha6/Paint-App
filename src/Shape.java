@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Shape abstract class
+ *
+ * @author: Pranay Tiru
+ */
 public abstract class Shape extends DrawAction {
     protected int timesClicked = 0;
 

@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Rectangle Shape
+ *
+ * @author: Pranay Tiru
+ */
 public class Rectangle extends Shape {
 
     public Rectangle(int x, int y, int width, int height, Color color) {

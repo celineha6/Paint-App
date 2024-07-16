@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Stack;
 
+/**
+ * Info Panel displays shapes as SVG elements
+ *
+ * @author: Pranay Tiru
+ */
 public class InfoPanel extends JPanel implements Observer {
     private JTextArea textArea;
     private String beginningStr = "<svg xmlns=\"https://www.w3.org/2000/svg\" width=\"800\" height = \"600\">";

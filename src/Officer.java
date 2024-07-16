@@ -8,7 +8,9 @@ import java.util.Stack;
 /**
  * Officer is a class that manages the drawing application's state and actions.
  * It handles drawing shapes, setting colors, and manages files.
- * @version 3.0
+ *
+ * @author: Celine Ha
+ * @author: Pranay Tiru
  */
 public class Officer implements Subject {
 	private DrawAction drawAction;

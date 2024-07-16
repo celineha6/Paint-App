@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Circle Shape
+ *
+ * @author: Pranay Tiru
+ */
 public class Circle extends Shape {
 
     public Circle(int x, int y, int width, int height, Color color) {

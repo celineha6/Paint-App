@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
  * @author javiergs
  *
  * @author: Pranay Tiru
+ * @author: Tenzin Konchok
  * @version 3.0
  */
 public class MouseNanny implements MouseListener, MouseMotionListener {

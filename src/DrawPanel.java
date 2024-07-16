@@ -7,7 +7,9 @@ import java.util.ArrayList;
 /**
  * DrawPanel creates a panel where the drawing is done.
  * According to the data in Officer.
- * @version 3.0
+ *
+ * @author: Celine Ha
+ * @author: Pranay Tiru
  */
 public class DrawPanel extends JPanel {
 	private Officer officer;

@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Hat Decorator
+ *
+ * @author: Pranay Tiru
+ */
 public class Hat extends ShapeDecorator {
     private int hatX;
     private int hatY;

@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Mouth Decorator
+ *
+ * @author: Pranay Tiru
+ */
 public class Mouth extends ShapeDecorator {
     private int mouthX;
     private int mouthY;

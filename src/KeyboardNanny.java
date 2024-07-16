@@ -3,6 +3,12 @@ package src;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Allows for user keyboard interaction
+ *
+ * @author: Celine Ha
+ * @author: Pranay Tiru
+ */
 public class KeyboardNanny implements KeyListener {
     private Officer officer;
 

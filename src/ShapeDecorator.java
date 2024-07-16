@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Shape Decorator Abstract Class
+ *
+ * @author: Pranay Tiru
+ */
 public abstract class ShapeDecorator extends DrawAction {
     protected DrawAction decoratedShape;
 

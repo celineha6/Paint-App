@@ -2,6 +2,12 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Abstract class that represents a shape/decorator
+ *
+ * @author: Pranay Tiru
+ * @author: Celine Ha
+ */
 public abstract class DrawAction {
     String shape;
     protected int x, y, width, height;

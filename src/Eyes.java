@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Eyes Decorator
+ *
+ * @author: Pranay Tiru
+ */
 public class Eyes extends ShapeDecorator {
     private int leftEyeX;
     private int rightEyeX;

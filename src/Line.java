@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Line Shape
+ *
+ * @author: Tenzin Konchok
+ */
 public class Line extends Shape {
 
     public Line(int x, int y, int width, int height, Color color) {

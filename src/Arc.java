@@ -2,6 +2,11 @@ package src;
 
 import java.awt.*;
 
+/**
+ * Arc Decorator
+ *
+ * @author: Pranay Tiru
+ */
 public class Arc extends Shape {
 
     public Arc(int x, int y, int width, int height, Color color) {
