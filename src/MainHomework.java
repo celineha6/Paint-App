@@ -28,16 +28,25 @@ public class MainHomework extends JFrame {
 		app.setResizable(false);
 		app.setVisible(true);
 	}
-
+	private Officer officer;
 	public MainHomework() {
-		JPanel drawPanel = new DrawPanel();
-		MouseNanny mouseNanny = new MouseNanny();
+		officer = new Officer();
+
+		JPanel drawPanel = new DrawPanel(officer);
+		Observer infoPanel = new InfoPanel();
+
+		officer.addObserver(infoPanel);
+
+		MouseNanny mouseNanny = new MouseNanny(officer);
+		KeyboardNanny keyNanny = new KeyboardNanny(officer);
 		drawPanel.addMouseListener(mouseNanny);
 		drawPanel.addMouseMotionListener(mouseNanny);
-		Officer.setDrawPanel(drawPanel);
+		drawPanel.addKeyListener(keyNanny);
+
+		officer.setDrawPanel(drawPanel);
 		setLayout(new BorderLayout());
 		add(drawPanel, BorderLayout.CENTER);
-
+		add((JPanel) infoPanel, BorderLayout.EAST);
 
 		setJMenuBar(initializeMenus());
 	}
@@ -47,7 +56,7 @@ public class MainHomework extends JFrame {
 
 	private JMenuBar initializeMenus() {
 		JMenuBar menuBar = new JMenuBar();
-		ActionNanny actionNanny = new ActionNanny();
+		ActionNanny actionNanny = new ActionNanny(officer);
 
 		JMenu FileMenu = getFilejMenu();
 
@@ -75,7 +84,7 @@ public class MainHomework extends JFrame {
 		return menuBar;
 	}
 
-	private static JMenu getFilejMenu() {
+	private JMenu getFilejMenu() {
 		JMenu FileMenu = new JMenu("File");
 		JMenuItem NewItem = new JMenuItem("New");
 		JMenuItem SaveItem = new JMenuItem("Save");
@@ -85,15 +94,15 @@ public class MainHomework extends JFrame {
 		FileMenu.add(LoadItem);
 
 		NewItem.addActionListener(e -> {
-			Officer.clearDrawings();
+			officer.clearDrawings();
 		});
 
 		SaveItem.addActionListener(e -> {
-			Officer.saveDrawings();
+			officer.saveDrawings();
 		});
 
 		LoadItem.addActionListener(e -> {
-            Officer.loadDrawings();
+            officer.loadDrawings();
 		});
 
 		return FileMenu;
@@ -132,7 +141,7 @@ public class MainHomework extends JFrame {
 		return colorMenu;
 	}
 
-	private static JMenu getEditjMenu() {
+	private JMenu getEditjMenu() {
 		JMenu editMenu = new JMenu("Edit");
 		JMenuItem copyItem = new JMenuItem("Copy");
 		JMenuItem pasteItem = new JMenuItem("Paste");
@@ -141,23 +150,23 @@ public class MainHomework extends JFrame {
 		JMenuItem eraseItem = new JMenuItem("Erase");
 
 		undoItem.addActionListener(e -> {
-			Officer.undoDrawAction();
+			officer.undoDrawAction();
 		});
 
 		redoItem.addActionListener(e -> {
-			Officer.redoDrawAction();
+			officer.redoDrawAction();
 		});
 
 		eraseItem.addActionListener(e -> {
-			Officer.eraseDrawAction();
+			officer.eraseDrawAction();
 		});
 
 		copyItem.addActionListener(e -> {
-			Officer.copyDrawAction();
+			officer.copyDrawAction();
 		});
 
 		pasteItem.addActionListener(e -> {
-			Officer.pasteDrawAction();
+			officer.pasteDrawAction();
 		});
 
 

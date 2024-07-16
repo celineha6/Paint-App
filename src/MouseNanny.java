@@ -16,23 +16,37 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 	private boolean drawingInProgress = false;
 	private boolean draggingShape = false;
 	private int initialX, initialY;
+	private Officer officer;
+
+	public MouseNanny(Officer officer) {
+		this.officer = officer;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (!drawingInProgress) {
-			clickShape(e);
+			if (clickShape(e)) {
+				DrawAction selectedShape = officer.getSelectedShape();
+				if (selectedShape != null) {
+					DrawAction decoratedShape = decorationDetermine(selectedShape);
+					if(decoratedShape != null) {
+						officer.updateSelectedShape(decoratedShape);
+					}
+					officer.tellYourBoss();
+				}
+			}
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Officer.deselectAll();
+		officer.deselectAll();
 		if (!drawingInProgress) {
 			int x = e.getX();
 			int y = e.getY();
-			Officer.drawAction.setX(x);
-			Officer.drawAction.setY(y);
-			if(clickShape(e)) {
+			officer.getDrawAction().setX(x);
+			officer.getDrawAction().setY(y);
+			if (clickShape(e)) {
 				initialX = x;
 				initialY = y;
 				draggingShape = true;
@@ -45,8 +59,8 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 		if (drawingInProgress) {
 			int x = e.getX();
 			int y = e.getY();
-			int startX = Officer.drawAction.getX();
-			int startY = Officer.drawAction.getY();
+			int startX = officer.getDrawAction().getX();
+			int startY = officer.getDrawAction().getY();
 			int width = Math.abs(x - startX);
 			int height = Math.abs(y - startY);
 
@@ -57,11 +71,11 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 				startY = y;
 			}
 
-			Officer.drawAction.setX(startX);
-			Officer.drawAction.setY(startY);
-			Officer.drawAction.setWidth(width);
-			Officer.drawAction.setHeight(height);
-			Officer.performDrawAction();
+			officer.getDrawAction().setX(startX);
+			officer.getDrawAction().setY(startY);
+			officer.getDrawAction().setWidth(width);
+			officer.getDrawAction().setHeight(height);
+			officer.performDrawAction();
 			drawingInProgress = false;
 		}
 
@@ -72,12 +86,12 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
+		// Not used in this implementation
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-
+		// Not used in this implementation
 	}
 
 	@Override
@@ -85,17 +99,17 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 		int x = e.getX();
 		int y = e.getY();
 
-		if (draggingShape && Officer.selectedShape != null) {
+		if (draggingShape && officer.getSelectedShape() != null) {
 			int deltaX = x - initialX;
 			int deltaY = y - initialY;
-			Officer.selectedShape.setX(Officer.selectedShape.getX() + deltaX);
-			Officer.selectedShape.setY(Officer.selectedShape.getY() + deltaY);
+			officer.getSelectedShape().setX(officer.getSelectedShape().getX() + deltaX);
+			officer.getSelectedShape().setY(officer.getSelectedShape().getY() + deltaY);
 			initialX = x;
 			initialY = y;
-			Officer.tellYourBoss();
+			officer.tellYourBoss();
 		} else {
-			int startX = Officer.drawAction.getX();
-			int startY = Officer.drawAction.getY();
+			int startX = officer.getDrawAction().getX();
+			int startY = officer.getDrawAction().getY();
 			int width = Math.abs(x - startX);
 			int height = Math.abs(y - startY);
 
@@ -107,7 +121,7 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 			}
 
 			drawingInProgress = true;
-			Officer.drawOutline(startX, startY, width, height);
+			officer.drawOutline(startX, startY, width, height);
 		}
 	}
 
@@ -120,17 +134,50 @@ public class MouseNanny implements MouseListener, MouseMotionListener {
 		boolean selected = false;
 		int x = e.getX();
 		int y = e.getY();
-		for (int i = Officer.undoStack.size() - 1; i >= 0; i--) {
-			DrawAction shape = Officer.undoStack.get(i);
+		for (int i = officer.getUndoStack().size() - 1; i >= 0; i--) {
+			DrawAction shape = officer.getUndoStack().get(i);
 			if (shape.checkCoordinates(x, y)) {
-				Officer.shapeSelect(shape);
+				officer.shapeSelect(shape);
 				selected = true;
 				break;
 			}
 		}
 		if (!selected) {
-			Officer.shapeSelect(null);
+			officer.shapeSelect(null);
 		}
 		return selected;
 	}
+
+	private DrawAction decorationDetermine(DrawAction shape) {
+		DrawAction returnShape = null;
+
+		if(shape instanceof ShapeDecorator) {
+			if(((ShapeDecorator) shape).getDecoratedShape().getShapeName().equals("Rectangle")
+			|| ((ShapeDecorator) shape).getDecoratedShape().getShapeName().equals("Circle")) {
+				if(shape instanceof Eyes) {
+					returnShape = new Mouth(shape);
+				} else if(shape instanceof Mouth) {
+					returnShape =  new Hat(shape);
+				} else {
+					returnShape = ((Hat) shape).getDecoratedShape();
+					returnShape = ((Mouth) returnShape).getDecoratedShape();
+					returnShape = ((Eyes) returnShape).getDecoratedShape();
+				}
+			} else if(((ShapeDecorator) shape).getDecoratedShape().getShapeName().equals("Arc")) {
+				if(shape instanceof Eyes) {
+					returnShape = new Hat(shape);
+				} else {
+					returnShape = ((Hat) shape).getDecoratedShape();
+					returnShape = ((Eyes) returnShape).getDecoratedShape();
+				}
+			}
+		} else {
+			if(!(shape instanceof Line)) {
+				returnShape = new Eyes(shape);
+			}
+		}
+
+		return returnShape;
+	}
 }
+

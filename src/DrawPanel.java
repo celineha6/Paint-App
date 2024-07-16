@@ -7,45 +7,43 @@ import java.util.ArrayList;
 /**
  * DrawPanel creates a panel where the drawing is done.
  * According to the data in Officer.
- * @author: javiergs
- *
- * @author: Akshaj Srirambhatla
- * Version: 3.0
+ * @version 3.0
  */
-public class DrawPanel extends JPanel{
+public class DrawPanel extends JPanel {
+	private Officer officer;
 
-	public DrawPanel() {
+	public DrawPanel(Officer officer) {
+		this.officer = officer;
 		setBackground(new Color(176, 250, 192));
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		ArrayList<DrawAction> list = new ArrayList(Officer.undoStack);
+		ArrayList<DrawAction> list = new ArrayList<>(officer.getUndoStack());
 
 		for (DrawAction action : list) {
-			if(action.isSelected()) {
+			if (action.isSelected()) {
 				action.drawOutline(g);
 			}
 			action.draw(g);
 		}
 
-		if (Officer.isDrawingOutline) {
+		if (officer.isDrawingOutline()) {
 			g.setColor(Color.BLACK);
-			switch (Officer.drawAction.getShape()) {
+			switch (officer.getDrawAction().getShapeName()) {
 				case "Rectangle":
-					g.drawRect(Officer.outlineX, Officer.outlineY, Officer.outlineWidth, Officer.outlineHeight);
+					g.drawRect(officer.getOutlineX(), officer.getOutlineY(), officer.getOutlineWidth(), officer.getOutlineHeight());
 					break;
 				case "Circle":
-					g.drawOval(Officer.outlineX, Officer.outlineY, Officer.outlineWidth, Officer.outlineHeight);
+					g.drawOval(officer.getOutlineX(), officer.getOutlineY(), officer.getOutlineWidth(), officer.getOutlineHeight());
 					break;
 				case "Arc":
-					g.drawArc(Officer.outlineX, Officer.outlineY, Officer.outlineWidth, Officer.outlineHeight, 0, 180);
+					g.drawArc(officer.getOutlineX(), officer.getOutlineY(), officer.getOutlineWidth(), officer.getOutlineHeight(), 0, 180);
 					break;
 				case "Line":
-					g.drawLine(Officer.outlineX, Officer.outlineY, Officer.outlineX + Officer.outlineWidth, Officer.outlineY + Officer.outlineHeight);
+					g.drawLine(officer.getOutlineX(), officer.getOutlineY(), officer.getOutlineX() + officer.getOutlineWidth(), officer.getOutlineY() + officer.getOutlineHeight());
 					break;
-
 			}
 		}
 	}
